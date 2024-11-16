@@ -1,33 +1,38 @@
-	Initialize Yocto environment
+#		Copy or download meta layer to Phytec Yocto 23.1.0 for i.MX 8M plus
+cd ~/phyLinux/sources/
+# mkdir -p ~/phyLinux/sources/meta-pco-ml/
+git https://github.com/jsjsjs000/imx8mp-phytec-yocto-machine-learning-image
+
+#		Initialize Phytec Yocto 23.1.0 environment
 cd ~/phyLinux
 source sources/poky/oe-init-build-env
 
-	Ubuntu Fonts
+#		Ubuntu Fonts
 # Download fonts: https://fonts.google.com/download/next-steps?query=ubuntu+mono
 # copy fonts to: /usr/share/fonts/truetype/ubuntu-font-family/
-unzip ~/Downloads/Ubuntu_Mono.zip -d ../sources/meta-pco-vision4ce-ml/recipes-pco-vision4ce-ml/pco-vision4ce-ml/pco-vision4ce-ml/ubuntu-font-family
+unzip ~/Downloads/Ubuntu_Mono.zip -d ../sources/meta-pco-ml/recipes-pco-ml/pco-ml/pco-ml/ubuntu-font-family
 cp /usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-Bold.ttf /usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf
 
-	Create new layer - meta-pco-vision4ce-ml
+#		Create new layer - meta-pco-ml
 # https://www.phytec.eu/en/cdocuments/?doc=UIHsG#L813e-A12YoctoReferenceManualHeadHardknott-CreateyourownLayercreatelayer
 #	"Create your own Layer"
-bitbake-layers create-layer -e pco-vision4ce-ml meta-pco-vision4ce-ml
-mv meta-pco-vision4ce-ml/ ../sources/
-mv ../sources/meta-pco-vision4ce-ml/recipes-pco-vision4ce-ml/pco-vision4ce-ml/pco-vision4ce-ml_0.1.bb ../sources/meta-pco-vision4ce-ml/recipes-pco-vision4ce-ml/pco-vision4ce-ml/pco-vision4ce-ml.bb
-mkdir ../sources/meta-pco-vision4ce-ml/recipes-pco-vision4ce-ml/pco-vision4ce-ml/pco-vision4ce-ml
+bitbake-layers create-layer -e pco-ml meta-pco-ml
+mv meta-pco-ml/ ../sources/
+mv ../sources/meta-pco-ml/recipes-pco-ml/pco-ml/pco-ml_0.1.bb ../sources/meta-pco-ml/recipes-pco-ml/pco-ml/pco-ml.bb
+mkdir ../sources/meta-pco-ml/recipes-pco-ml/pco-ml/pco-ml
 code conf/bblayers.conf
 # ----------------------------------------
 BBLAYERS += "\
-  ${OEROOT}/../meta-pco-vision4ce-ml \
+  ${OEROOT}/../meta-pco-ml \
 # ----------------------------------------
 
-bitbake pco-vision4ce-ml   # compile only this recipe
+bitbake pco-ml   # compile only this recipe
 
-	Create new image - pco-vision4ce-ml-image
-# create meta-pco-vision4ce-ml image first
-mkdir -p ../sources/meta-pco-vision4ce-ml/recipes-images/pco-vision4ce-ml-image
+	Create new image - pco-ml-image
+# create meta-pco-ml image first
+mkdir -p ../sources/meta-pco-ml/recipes-images/pco-ml-image
 
-bitbake pco-vision4ce-ml-image
+bitbake pco-ml-image
 
 	Write  to SD card
 sync; umount /media/$USER/boot; umount /media/$USER/root
@@ -37,7 +42,7 @@ lsblk -e7
 #> ├─mmcblk0p1           179:1    0    65M  0 part  
 #> └─mmcblk0p2           179:2    0   1,6G  0 part  
 
-sudo pv -tpreb deploy/images/phyboard-pollux-imx8mp-3/pco-vision4ce-ml-image-phyboard-pollux-imx8mp-3.wic | sudo dd of=/dev/mmcblk0 bs=1M oflag=sync; sync
+sudo pv -tpreb deploy/images/phyboard-pollux-imx8mp-3/pco-ml-image-phyboard-pollux-imx8mp-3.wic | sudo dd of=/dev/mmcblk0 bs=1M oflag=sync; sync
 
 
 overlays=imx8mp-isi-csi1.dtbo imx8mp-vm017-csi1.dtbo imx8mp-isi-csi2.dtbo imx8mp-vm017-csi2.dtbo

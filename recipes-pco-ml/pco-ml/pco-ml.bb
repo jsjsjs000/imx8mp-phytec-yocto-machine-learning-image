@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 #DEPENDS += " freetype liberation-fonts"
 RDEPENDS:${PN} += " freetype liberation-fonts"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/pco-vision4ce-ml:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/pco-ml:"
 SRC_URI = " \
 	file://ubuntu-font-family/UbuntuMono-Regular.ttf \
 	file://ubuntu-font-family/UbuntuMono-Bold.ttf \
