@@ -1,4 +1,4 @@
-#		Install Phytec Yocto PD23.1.0 for i.MX 8M plus
+#		Install Phytec Yocto PD23.1.0 for i.MX 8M plus on Ubuntu 22.04 host PC
 # Install in ~/phyLinux folder
 mkdir ~/phyLinux
 cd ~/phyLinux
@@ -37,11 +37,31 @@ mv imx8mp-phytec-yocto-machine-learning-image/ meta-pco-ml/
 cd -
 
 
+#		Add meta layer to Yocto layers
+code conf/bblayers.conf
+# ----------------------------------------
+BBLAYERS += "\
+  ${OEROOT}/../meta-pco-ml \
+# ----------------------------------------
+
+
+#		Fix compilation problem: arm-compute-library_22.05.bb - PD23.1.0 - Ubuntu 22.04 host PC
+# when add packagegroup-imx-ml meta layer
+IMAGE_INSTALL += " packagegroup-imx-ml"
+
+nano sources/poky/meta/classes/scons.bbclass
+# comment out:
+# EXTRA_OESCONS:append = " ${SCONS_MAXLINELENGTH}"
+# remove 3 times: PREFIX=${prefix} prefix=${prefix}
+
+bitbake -c compile arm-compute-library
+
+
 #		Compile Yocto image
 bitbake pco-ml-image
 
 
-	Write  to SD card
+#		Write  to SD card
 sync; umount /media/$USER/boot; umount /media/$USER/root
 
 lsblk -e7
@@ -72,27 +92,6 @@ gst-launch-1.0 imxcompositor_g2d name=comp sink_1::xpos=0 sink_1::ypos=0 sink_1:
 
 
 
-	Add files to boot partition
-cp ~/Desktop/jarsulk-pco/programs/imx8mp/m7/imx8mp_m7_led_demo/armgcc/debug/imx8mp_uart_server.bin ../sources/meta-phytec/recipes-bsp/bootenv/phytec-bootenv
-	# VM version:
-# copy file to vm:
-cp ~/Desktop/jarsulk-pco/programs/imx8mp/m7/imx8mp_m7_led_demo/armgcc/debug/imx8mp_uart_server.bin vm_share/
-# copy file from vm to phyLinux:
-cp /mnt/vm/imx8mp_uart_server.bin ../sources/meta-phytec/recipes-bsp/bootenv/phytec-bootenv
-
-code ../sources/meta-phytec/recipes-bsp/bootenv/phytec-bootenv.bb
-# ----------------------------------------
-SRC_URI = " \
-	file://imx8mp_uart_server.bin \
-
-do_deploy() {
-	install -m 0644 ${S}/imx8mp_uart_server.bin ${DEPLOYDIR}
-# ----------------------------------------
-
-code ../sources/meta-phytec/conf/machine/include/phyimx8.inc
-# ----------------------------------------
-IMAGE_BOOT_FILES += "imx8mp_uart_server.bin"
-# ----------------------------------------
 
 
 
