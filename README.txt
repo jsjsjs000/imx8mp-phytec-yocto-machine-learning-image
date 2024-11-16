@@ -1,11 +1,39 @@
-#		Copy or download meta layer to Phytec Yocto 23.1.0 for i.MX 8M plus
+#		Install Phytec Yocto PD23.1.0 for i.MX 8M plus
+# Install in ~/phyLinux folder
+mkdir ~/phyLinux
+cd ~/phyLinux
+wget https://download.phytec.de/Software/Linux/Yocto/Tools/phyLinux
+# chmod +x phyLinux
+python phyLinux init
+#> colors: y
+#> 13: imx8mp
+#> 37: BSP-Yocto-NXP-i.MX8MP-PD23.1.0
+#> 5: phyboard-pollux-imx8mp-3: PHYTEC phyBOARD-Pollux i.MX8M Plus 1-4GB RAM
+
+code build/conf/local.conf
+# change <user> to your user name in /home/ folder
+----------------------------------------
+# don't use ~ - use absolute paths
+DL_DIR ?= "/home/<user>>/phyLinux/yocto_downloads"
+SSTATE_DIR ?= "/home/<user>>/phyLinux/yocto_sstate"
+ACCEPT_FSL_EULA = "1"
+----------------------------------------
+
+mkdir ~/phyLinux/yocto_downloads
+mkdir ~/phyLinux/yocto_sstate
+
+
+#		Initialize Yocto environment
+cd ~/phyLinux
+source sources/poky/oe-init-build-env
+
+
+#		Copy or download meta layer to Phytec Yocto PD23.1.0 for i.MX 8M plus
+# assume Phytec Yocto PD23.1.0 is in ~/phyLinux
 cd ~/phyLinux/sources/
 # mkdir -p ~/phyLinux/sources/meta-pco-ml/
 git clone https://github.com/jsjsjs000/imx8mp-phytec-yocto-machine-learning-image
 
-#		Initialize Phytec Yocto 23.1.0 environment
-cd ~/phyLinux
-source sources/poky/oe-init-build-env
 
 
 	Write  to SD card
