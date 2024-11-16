@@ -33,7 +33,12 @@ source sources/poky/oe-init-build-env
 cd ~/phyLinux/sources/
 # mkdir -p ~/phyLinux/sources/meta-pco-ml/
 git clone https://github.com/jsjsjs000/imx8mp-phytec-yocto-machine-learning-image
+mv imx8mp-phytec-yocto-machine-learning-image/ meta-pco-ml/
+cd -
 
+
+#		Compile Yocto image
+bitbake pco-ml-image
 
 
 	Write  to SD card
