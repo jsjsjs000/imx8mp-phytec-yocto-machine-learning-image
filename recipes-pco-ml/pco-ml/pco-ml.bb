@@ -17,7 +17,7 @@ SRC_URI = " \
 
 do_install() {
 	install -d ${D}/usr/share/fonts/truetype/liberation2/
-	ln -s -r ${IMAGE_ROOTFS}/usr/share/fonts/ttf/LiberationMono-Bold.ttf ${D}/usr/share/fonts/truetype/liberation2/LiberationMono-Bold.ttf
+	ln -sr ${D}/usr/share/fonts/ttf/LiberationMono-Bold.ttf ${D}/usr/share/fonts/truetype/liberation2/LiberationMono-Bold.ttf
 
 	# Download fonts: https://fonts.google.com/download/next-steps?query=ubuntu+mono
 	install -d ${D}/usr/share/fonts/truetype/ubuntu-font-family/
