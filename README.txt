@@ -1,4 +1,10 @@
 #		Install Phytec Yocto PD23.1.0 for i.MX 8M plus on Ubuntu 22.04 host PC
+sudo apt install -y build-essential git make cmake flex bison chrpath diffstat gawk liblz4-tool
+sudo pip3 install meson
+
+git config --global user.name "<username>"
+git config --global user.email "<email>"
+
 # Install in ~/phyLinux folder
 mkdir ~/phyLinux
 cd ~/phyLinux
