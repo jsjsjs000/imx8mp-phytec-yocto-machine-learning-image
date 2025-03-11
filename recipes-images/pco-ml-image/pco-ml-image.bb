@@ -37,6 +37,7 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = "\
 	python-phycam-margin-analysis \
 	packagegroup-imx-ml \
 	pco-ml \
+	proftpd uftp vsftpd \
 "
 
 IMAGE_INSTALL:append = " gstreamer1.0-rtsp-server glfw boost freetype liberation-fonts"
